@@ -18,7 +18,7 @@ class PlayList(ft.View):
         self.controls = [
             ft.Row(
                 [
-                    Text("PLAYLIST", size=30),
+                    Text("Your Playlist:", size=30, weight="bold"),
                 ],
                 alignment="center"
             ),
@@ -33,9 +33,19 @@ class PlayList(ft.View):
             )
 
         self.controls.append(
-            ft.Row(
-                [IconButton("Download", 2,action=self.toggle_download)],
-                alignment="bottomCenter"
+            ft.Column(
+                [
+                    ft.Row(
+                        [
+                            ft.Divider(height=20, color="transparent"),
+                            IconButton(ft.icons.DOWNLOAD, 2, action=self.toggle_download),
+                        ],
+                        alignment="center"
+                    ),
+                    ft.Divider(height=20, color="transparent"),
+                ],
+                alignment="end",
+                expand=True,
             )
         )
 
@@ -50,12 +60,21 @@ class PlayList(ft.View):
             ),
             data=song,
             padding=10,
-            on_click=self.toggle_song
+            on_click=self.toggle_song,
+            on_hover=lambda e: self.highlight_on_hover(e)
         )
+
+    def highlight_on_hover(self, event):
+        if event.data == "true":
+            event.control.bgcolor = ft.colors.with_opacity(0.1, "blue")
+        else:
+            event.control.bgcolor = None
+        event.control.update()
 
     def toggle_song(self, event):
         self.page.session.set("song",event.control.data)
         self.page.go("/song")
 
     def toggle_download(self, event):
+        self.page.session.clear()
         self.page.go("/downloads")

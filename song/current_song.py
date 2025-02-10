@@ -1,5 +1,5 @@
 import flet as ft
-from blocks import Text, TextButton, IconButton
+from blocks import Text, IconButton
 from blocks.slider import Slider
 
 
@@ -24,9 +24,8 @@ class CurrentSong(ft.View):
         self.txt_start = Text(self.format_time(self.start))
         self.txt_end = Text(f"-{self.format_time(self.end)}")
 
-        self.back_btn = TextButton(
-            Text("PlayList",20, "white"),
-            self.toggle_playlist
+        self.back_btn = IconButton(
+            ft.icons.ARROW_BACK, 1.5, self.toggle_playlist
         )
 
         self.play_btn = self.create_toggle_button(
@@ -74,11 +73,11 @@ class CurrentSong(ft.View):
             ft.Row(
                 [
                     self.create_toggle_button(
-                        ft.icons.REPLAY_5_SHARP,0.9, lambda e: self.update_position(-5000)
+                        ft.icons.REPLAY_5_SHARP,1.2, lambda e: self.update_position(-5000)
                     ),
                     self.play_btn,
                     self.create_toggle_button(
-                        ft.icons.FORWARD_5_SHARP, 0.9, lambda e: self.update_position(5000)
+                        ft.icons.FORWARD_5_SHARP, 1.2, lambda e: self.update_position(5000)
                     ),
                 ],
                 alignment="spaceEvenly"
@@ -161,5 +160,5 @@ class CurrentSong(ft.View):
         self.update_time()
 
     def create_audio(self):
-        self.audio = ft.Audio(self.song.src, on_position_changed=lambda e: self._update(int(e.data)))
+        self.audio = ft.Audio(self.song.src, on_position_changed=lambda e: self._update(int(e.data)), volume=1.0)
         self.page.overlay.append(self.audio)

@@ -7,6 +7,9 @@ from song import CurrentSong
 
 def main(page: ft.Page):
     page.title = "Music Player App"
+    page.window.width = 400
+    page.window.height = 700
+    page.window.resizable = False
 
     def router(route):
         page.views.clear()
@@ -22,6 +25,7 @@ def main(page: ft.Page):
         if page.route == "/downloads":
             downloads = Downloading(page)
             page.views.append(downloads)
+
 
         page.update()
 
