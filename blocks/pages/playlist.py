@@ -27,7 +27,6 @@ class PlayList(ft.View):
             ft.Column(
                 controls=[],
                 scroll="auto",
-                scroll_color="white",
                 expand=True
             ),
             ft.Row(
