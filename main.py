@@ -1,8 +1,7 @@
 
 import flet as ft
 
-from blocks import PlayList, Downloading
-from song import CurrentSong
+from blocks import PlayList, Downloading, CurrentSong
 
 
 def main(page: ft.Page):

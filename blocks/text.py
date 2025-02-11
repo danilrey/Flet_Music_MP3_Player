@@ -1,5 +1,4 @@
 import flet as ft
-from blocks import *
 
 class Text(ft.Text):
     def __init__(self, content, size: int = 20, color = "white", weight = "normal", opacity = 1):

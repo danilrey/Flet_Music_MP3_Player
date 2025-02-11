@@ -13,3 +13,6 @@ class SongLibrary:
         for file in os.listdir("downloads"):
             if file.endswith(".mp3"):
                 self.playlist.append(Song("downloads/" + file))
+
+    def get_playlist(self):
+        return self.playlist
