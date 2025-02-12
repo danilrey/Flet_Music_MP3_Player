@@ -6,7 +6,7 @@ class IconButton(ft.IconButton):
         self.icon = icon
         self.scale = scale
         self.on_click = action
-        self.hover_color = ft.colors.with_opacity(0.1, "blue")
+        self.hover_color = ft.Colors.with_opacity(0.1, "blue")
 
     def set_icon(self, icon):
         self.icon = icon

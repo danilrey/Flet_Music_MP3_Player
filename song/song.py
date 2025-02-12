@@ -1,7 +1,6 @@
 import os
 import re
 
-
 class Song:
     def __init__(self, src):
         self.src = src
@@ -33,9 +32,10 @@ class Song:
     def find_img_src(self):
         basename = os.path.basename(self.src)
         name, _ = os.path.splitext(basename)
-        for file in os.listdir("downloads/img"):
+        img_dir = os.path.join(os.path.dirname(__file__), '..', 'assets', 'img')
+        for file in os.listdir(img_dir):
             if name in file:
-                self.img_src = "img/" + file
+                self.img_src = os.path.join('assets', 'img', file)
                 return self.img_src
 
     def artist(self):

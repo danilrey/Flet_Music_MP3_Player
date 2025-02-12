@@ -1,7 +1,7 @@
 import yt_dlp
 import os
 
-def download_img_yt_dlp(youtube_url, output_folder="downloads/img"):
+def download_img_yt_dlp(youtube_url, output_folder="assets/img"):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 

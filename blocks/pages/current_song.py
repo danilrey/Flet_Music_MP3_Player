@@ -1,7 +1,7 @@
 import flet as ft
 from blocks import Text
 from blocks.slider import Slider
-
+import flet_audio as fta
 
 class CurrentSong(ft.View):
     def __init__(self, page: ft.Page):
@@ -12,7 +12,7 @@ class CurrentSong(ft.View):
             vertical_alignment="center",
         )
         from blocks import Divider, IconButton
-        self.slider = Slider("transparent",0.0,1.0,on_change=lambda e:self.toggle_seek(round(float(e.control.value))))
+        self.slider = Slider("transparent", 0.0, 1.0, on_change=lambda e: self.toggle_seek(round(float(e.control.value))))
         self.audio = None
         self.page = page
         self.song = self.page.session.get("song")
@@ -26,11 +26,11 @@ class CurrentSong(ft.View):
         self.txt_end = Text(f"-{self.format_time(self.end)}")
 
         self.back_btn = IconButton(
-            ft.icons.ARROW_BACK, 1.5, self.toggle_playlist
+            ft.Icons.ARROW_BACK, 1.5, self.toggle_playlist
         )
 
         self.play_btn = self.create_toggle_button(
-            ft.icons.PLAY_ARROW_ROUNDED,2,self.play
+            ft.Icons.PLAY_ARROW_ROUNDED, 2, self.play
         )
 
         self.controls = [
@@ -39,25 +39,27 @@ class CurrentSong(ft.View):
                 alignment="start"
             ),
             ft.Container(
+                content=ft.Image(
+                    src=self.song.get_img_src(),
+                    fit="cover"
+                ),
                 height=120,
                 expand=True,
                 border_radius=10,
                 shadow=ft.BoxShadow(
                     spread_radius=6,
                     blur_radius=10,
-                    color = ft.colors.with_opacity(0.35,"black")
-                ),
-                image_fit="cover",
-                image_src=self.song.get_img_src()
+                    color=ft.Colors.with_opacity(0.35, "black")
+                )
             ),
             Divider(height=10),
             ft.Column(
                 [
                     ft.Row(
-                        controls=[Text(self.song.name(),18,weight="bold")]
+                        controls=[Text(self.song.name(), 18, weight="bold")]
                     ),
                     ft.Row(
-                        controls=[Text(self.song.artist(),15,opacity=0.80)]
+                        controls=[Text(self.song.artist(), 15, opacity=0.80)]
                     )
                 ],
                 spacing=1
@@ -65,7 +67,7 @@ class CurrentSong(ft.View):
             Divider(height=10),
             ft.Column(
                 [
-                    ft.Row([self.txt_start,self.txt_end],alignment="spaceBetween"),
+                    ft.Row([self.txt_start, self.txt_end], alignment="spaceBetween"),
                     self.slider
                 ],
                 spacing=0
@@ -74,11 +76,11 @@ class CurrentSong(ft.View):
             ft.Row(
                 [
                     self.create_toggle_button(
-                        ft.icons.REPLAY_5_SHARP,1.2, lambda e: self.update_position(-5000)
+                        ft.Icons.REPLAY_5_SHARP, 1.2, lambda e: self.update_position(-5000)
                     ),
                     self.play_btn,
                     self.create_toggle_button(
-                        ft.icons.FORWARD_5_SHARP, 1.2, lambda e: self.update_position(5000)
+                        ft.Icons.FORWARD_5_SHARP, 1.2, lambda e: self.update_position(5000)
                     ),
                 ],
                 alignment="spaceEvenly"
@@ -86,16 +88,16 @@ class CurrentSong(ft.View):
             Divider(height=10)
         ]
 
-    def toggle_playlist(self,event):
+    def toggle_playlist(self, event):
         self.audio.pause()
         self.page.session.clear()
         self.page.go("/playlist")
 
-    def create_toggle_button(self,icon, scale, action):
+    def create_toggle_button(self, icon, scale, action):
         from blocks import IconButton
-        return IconButton(icon,scale, action)
+        return IconButton(icon, scale, action)
 
-    def play(self,event):
+    def play(self, event):
         self.toggle_play_pause(event)
         self.duration = self.audio.get_duration()
         self.end = self.duration
@@ -103,15 +105,15 @@ class CurrentSong(ft.View):
 
     def toggle_play_pause(self, event):
         if self.is_playing:
-            self.play_btn.set_icon(ft.icons.PLAY_ARROW_ROUNDED)
+            self.play_btn.set_icon(ft.Icons.PLAY_ARROW_ROUNDED)
             self.audio.pause()
         else:
-            self.play_btn.set_icon(ft.icons.PAUSE_ROUNDED)
+            self.play_btn.set_icon(ft.Icons.PAUSE_ROUNDED)
             try:
                 self.audio.resume()
             except Exception:
                 self.audio.play()
-        self.is_playing = False if self.is_playing else True
+        self.is_playing = not self.is_playing
         self.play_btn.update()
 
     def update_start_end(self):
@@ -145,11 +147,11 @@ class CurrentSong(ft.View):
 
     def format_time(self, time):
         milliseconds = time
-        minutes, seconds = divmod(milliseconds / 1000,60)
-        formatted = "{:02}:{:02}".format(int(minutes),int(seconds))
+        minutes, seconds = divmod(milliseconds / 1000, 60)
+        formatted = "{:02}:{:02}".format(int(minutes), int(seconds))
         return formatted
 
-    def toggle_seek(self,delta):
+    def toggle_seek(self, delta):
         self.start = delta
         self.end = self.duration - delta
         self.audio.seek(self.start)
@@ -162,5 +164,5 @@ class CurrentSong(ft.View):
         self.update_time()
 
     def create_audio(self):
-        self.audio = ft.Audio(self.song.get_src(), on_position_changed=lambda e: self._update(int(e.data)), volume=1.0)
+        self.audio = fta.Audio(self.song.get_src(), on_position_changed=lambda e: self._update(int(e.data)), volume=1.0)
         self.page.overlay.append(self.audio)

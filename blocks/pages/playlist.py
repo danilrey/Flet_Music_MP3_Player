@@ -32,7 +32,7 @@ class PlayList(ft.View):
             ft.Row(
                 [
                     Divider(),
-                    ft.IconButton(icon=ft.icons.DOWNLOAD, scale=2, on_click=self.toggle_download),
+                    ft.IconButton(icon=ft.Icons.DOWNLOAD, scale=2, on_click=self.toggle_download),
                 ],
                 alignment="center"
             ),
@@ -64,7 +64,7 @@ class PlayList(ft.View):
 
     def highlight_on_hover(self, event):
         if event.data == "true":
-            event.control.bgcolor = ft.colors.with_opacity(0.1, "blue")
+            event.control.bgcolor = ft.Colors.with_opacity(0.1, "blue")
         else:
             event.control.bgcolor = None
         event.control.update()
@@ -75,4 +75,4 @@ class PlayList(ft.View):
 
     def toggle_download(self, event):
         self.page.session.clear()
-        self.page.go("/downloads")
+        self.page.go("/assets")

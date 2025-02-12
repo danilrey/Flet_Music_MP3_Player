@@ -7,7 +7,7 @@ class Slider(ft.Slider):
         self.max = max_value
         self.color = color
         self.on_change = on_change
-        self.overlay_color = ft.colors.with_opacity(0.1, "blue")
+        self.overlay_color = ft.Colors.with_opacity(0.1, "blue")
 
     def set_max(self, max_value):
         self.max = max_value

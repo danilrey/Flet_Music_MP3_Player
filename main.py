@@ -21,7 +21,7 @@ def main(page: ft.Page):
             song = CurrentSong(page)
             page.views.append(song)
 
-        if page.route == "/downloads":
+        if page.route == "/assets":
             downloads = Downloading(page)
             page.views.append(downloads)
 
@@ -31,4 +31,4 @@ def main(page: ft.Page):
     page.on_route_change = router
     page.go("/playlist")
 
-ft.app(target=main, assets_dir="downloads")
+ft.app(target=main, assets_dir="assets")
